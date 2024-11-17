@@ -32,9 +32,9 @@ class EventosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Eventos $eventos)
+    public function show(Eventos $eventos, $id)
     {
-        $eventos = Eventos::findOrFail($eventos);
+        $eventos = Eventos::findOrFail($id);
 
         return response()->json($eventos);
     }
@@ -42,9 +42,9 @@ class EventosController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Eventos $eventos)
+    public function update(Request $request, $id)
     {
-        $eventos = Eventos::findOrFail($eventos);
+        $eventos = Eventos::findOrFail($id);
 
         $eventos->update($request->all());
 
@@ -56,6 +56,6 @@ class EventosController extends Controller
      */
     public function destroy(Eventos $eventos)
     {
-        // $event
+        // 
     }
 }

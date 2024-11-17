@@ -10,10 +10,8 @@ class Eventos extends Model
 
     protected $fillable = [
         'descricao',
-        'dt_criacao',
-        'dt_inicio',
-        'dt_fim'
+        'dt_criacao'
     ];
 
-    protected $table = 'evento';
+    protected $table = 'eventos';
 }
