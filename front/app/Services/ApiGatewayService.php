@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\PendingRequest;
 
@@ -46,6 +47,11 @@ class ApiGatewayService
     public function deleteUser($id)
     {
         return $this->http->delete("/users/{$id}")->json();
+    }
+
+    public function authenticateUser($email, $password)
+    {
+        return $this->http->get('/users/auth', ['email' => $email, 'password' => $password])->json();
     }
 
     // Helper method to handle errors

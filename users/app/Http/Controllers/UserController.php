@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -57,6 +58,19 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
+
+        return response()->json($user);
+    }
+
+    public function authenticate(Request $request)
+    {
+        $user = User::where("email", $request->email)->first();
+
+        if (empty($user) || ! Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => 'Credenciais inválidas',
+            ], 401);
+        }
 
         return response()->json($user);
     }

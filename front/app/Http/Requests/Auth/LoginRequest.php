@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Services\ApiGatewayService;
+use Exception;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +13,14 @@ use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
 {
+    protected $apiGatewayService;
+
+    public function __construct(ApiGatewayService $apiGatewayService)
+    {
+        parent::__construct();
+        $this->apiGatewayService = $apiGatewayService;
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -41,12 +51,20 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        try
+        {
+            $response = $this->apiGatewayService->authenticateUser(
+                $this->input('email'),
+                $this->input('password')
+            );
+        }
+        catch (Exception $e)
+        {
             RateLimiter::hit($this->throttleKey());
-
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => trans('auth.failed')
             ]);
+
         }
 
         RateLimiter::clear($this->throttleKey());
