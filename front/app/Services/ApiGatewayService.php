@@ -51,7 +51,7 @@ class ApiGatewayService
 
     public function authenticateUser($email, $password)
     {
-        return $this->http->get('/users/auth', ['email' => $email, 'password' => $password])->json();
+        return $this->http->post('/users/auth', ['email' => $email, 'password' => $password])->json();
     }
 
     // Helper method to handle errors

@@ -57,6 +57,8 @@ class LoginRequest extends FormRequest
                 $this->input('email'),
                 $this->input('password')
             );
+
+            dd($response);
         }
         catch (Exception $e)
         {
