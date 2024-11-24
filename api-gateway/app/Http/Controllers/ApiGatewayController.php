@@ -9,6 +9,7 @@ class ApiGatewayController extends Controller
 {
     protected $serviceUrls = [
         'users' => 'http://127.0.0.1:8000/api',
+        'eventos' => 'http://127.0.0.1:8002/api',
         // Add more services as needed
     ];
 

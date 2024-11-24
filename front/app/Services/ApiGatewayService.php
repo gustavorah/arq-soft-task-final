@@ -54,6 +54,11 @@ class ApiGatewayService
         return $this->http->post('/users/auth', ['email' => $email, 'password' => md5($password)])->json();
     }
 
+    public function getEventos()
+    {
+        return $this->http->get("/eventos/")->json();
+    }
+
     // Helper method to handle errors
     protected function handleResponse($response)
     {

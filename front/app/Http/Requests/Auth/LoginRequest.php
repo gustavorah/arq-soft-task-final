@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -51,22 +52,32 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        try
+        try 
         {
             $response = $this->apiGatewayService->authenticateUser(
                 $this->input('email'),
                 $this->input('password')
             );
-
-            dd($response);
-        }
-        catch (Exception $e)
+        
+            // Verificar o retorno do response
+            if ($response['id']) 
+            {
+                // Log para depuração
+                Auth::loginUsingId($response['id']);
+                Log::info('Usuário autenticado com sucesso', ['email' => $this->input('email')]);
+            } 
+            else 
+            {
+                throw new Exception('Credenciais inválidas');
+            }
+        } 
+        catch (Exception $e) 
         {
-            RateLimiter::hit($this->throttleKey());
+            Log::error($response, ['email'=> $this->input('email')]);
+            Log::error('Erro de autenticação', ['email' => $this->input('email'), 'error' => $e->getMessage()]);
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed')
+                'email' => trans('auth.failed'),
             ]);
-
         }
 
         RateLimiter::clear($this->throttleKey());
