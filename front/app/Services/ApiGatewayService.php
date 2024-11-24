@@ -14,7 +14,7 @@ class ApiGatewayService
     public function __construct()
     {
         $this->baseUrl = env('URL_API_GATEWAY', 'http://127.0.0.1:8001/api');
-        
+
         $this->http = Http::baseUrl($this->baseUrl)
             ->withHeaders([
                 'Accept' => 'application/json',
@@ -51,7 +51,7 @@ class ApiGatewayService
 
     public function authenticateUser($email, $password)
     {
-        return $this->http->post('/users/auth', ['email' => $email, 'password' => $password])->json();
+        return $this->http->post('/users/auth', ['email' => $email, 'password' => md5($password)])->json();
     }
 
     // Helper method to handle errors
