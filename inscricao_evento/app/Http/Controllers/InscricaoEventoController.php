@@ -8,12 +8,12 @@ use Illuminate\Validation\Rules\In;
 
 class InscricaoEventoController extends Controller
 {
-    public function index()
-    {
-        $inscricoes_eventos = InscricaoEvento::all();
+    // public function index()
+    // {
+    //     $inscricoes_eventos = InscricaoEvento::all();
 
-        return response()->json($inscricoes_eventos);
-    }
+    //     return response()->json($inscricoes_eventos);
+    // }
 
     public function show($id)
     {
@@ -48,5 +48,12 @@ class InscricaoEventoController extends Controller
         $inscricao_evento->delete();
 
         return response()->json($inscricao_evento);
+    }
+
+    public function getInscricoesByUser(Request $request)
+    {
+        $inscricoes_eventos = InscricaoEvento::where("ref_pessoa", "=", $request['ref_pessoa'])->get();
+        
+        return response()->json($inscricoes_eventos);
     }
 }

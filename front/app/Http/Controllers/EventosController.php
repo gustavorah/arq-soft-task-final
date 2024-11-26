@@ -27,4 +27,16 @@ class EventosController extends Controller
             throw new Exception("Sem eventos" . $e->getMessage());
         }
     }
+
+    public function getEvento($id)
+    {
+        try
+        {
+            return $this->apiGatewayService->getEvento($id);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("Evento $id não encontrado, ". $e->getMessage());
+        }
+    }
 }

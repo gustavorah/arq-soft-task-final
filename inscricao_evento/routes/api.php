@@ -4,7 +4,7 @@ use App\Http\Controllers\InscricaoEventoController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(InscricaoEventoController::class)->group(function() {
-    Route::get("/", 'index');
+    Route::post("/inscricoes", 'getInscricoesByUser');
     Route::get('/{inscricao_evento}','show');
     Route::post("/", 'store');
     Route::put("/{inscricao_evento}", 'update');

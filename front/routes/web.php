@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventosController;
+use App\Http\Controllers\InscricaoEventoController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,6 +13,7 @@ Route::get('/', function () {
 Route::middleware(['auth','verified'])->group(function () {
     Route::get('/eventos', [EventosController::class,'index'])->name('eventos');
     Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard');
+    Route::get('/inscricoes', [InscricaoEventoController::class, 'getAllInscricoes']);
 });
 
 Route::middleware('auth')->group(function () {

@@ -59,6 +59,16 @@ class ApiGatewayService
         return $this->http->get("/eventos/")->json();
     }
 
+    public function getInscricoesByUser($user)
+    {
+        return $this->http->post("/inscricao-evento/inscricoes", ["ref_pessoa"=> $user['id']])->json();
+    }
+
+    public function getEvento($ref_evento)
+    {
+        return $this->http->get('/eventos/{eventos}', ['id'=> $ref_evento])->json();
+    }
+
     // Helper method to handle errors
     protected function handleResponse($response)
     {
