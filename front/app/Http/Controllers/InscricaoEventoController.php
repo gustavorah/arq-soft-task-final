@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\ApiGatewayService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class InscricaoEventoController extends Controller
 {
@@ -33,6 +34,20 @@ class InscricaoEventoController extends Controller
         }
         
         return view("dashboard", compact('eventos'));
-        // return response()->json($eventos);
+    }
+
+    public function store(Request $request)
+    {
+        try
+        {
+            $inscricao_evento = $this->apiGatewayService->storeInscricaoEvento($request->all());
+
+            return response()->json(['success' => true, 'message' => "Inscrição realizada com sucesso"]);
+        }
+        catch (\Exception $e)
+        {
+            Log::error($e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Erro interno no servidor'], 500);
+        }
     }
 }

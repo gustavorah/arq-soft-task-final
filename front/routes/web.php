@@ -13,7 +13,7 @@ Route::get('/', function () {
 Route::middleware(['auth','verified'])->group(function () {
     Route::get('/eventos', [EventosController::class,'index'])->name('eventos');
     Route::get('/dashboard', [InscricaoEventoController::class,'getAllInscricoes'])->name('dashboard');
-    // Route::post('/inscrever', /?:);
+    Route::post('/inscrever', [InscricaoEventoController::class,'store'])->name('inscrever');
 });
 
 Route::middleware('auth')->group(function () {

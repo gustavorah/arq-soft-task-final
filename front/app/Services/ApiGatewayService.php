@@ -5,6 +5,7 @@ namespace App\Services;
 use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Support\Facades\Log;
 
 class ApiGatewayService
 {
@@ -67,6 +68,11 @@ class ApiGatewayService
     public function getEvento($ref_evento)
     {
         return $this->http->get('/eventos/{eventos}', ['id'=> $ref_evento])->json();
+    }
+
+    public function storeInscricaoEvento($params)
+    {
+        return $this->http->post('/inscricao-evento', ["ref_pessoa" => $params['ref_pessoa'], 'ref_evento'=> $params['ref_evento']])->json();
     }
 
     // Helper method to handle errors

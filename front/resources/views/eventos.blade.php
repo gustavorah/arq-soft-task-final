@@ -13,14 +13,13 @@
                 <div class="p-6 text-gray-900 w-1/2" style="display: flex; justify-content: space-between">
                     {{ $evento['descricao'] }}
                 
-                    <div onclick="inscreverEvento({{ $evento['id'] }})">
+                    <div>
                         <x-primary-button class="ms-3">
                             {{ __("Inscrever")}}
                         </x-primary-button>
                         <div id="{{$evento['id']}}">
-                            <x-modal-dialog>
-
-                            </x-modal-dialog>
+                            
+                            <x-modal-dialog :evento="$evento" :user="$user"></x-modal-dialog>
                         </div>
                     </div>
                 </div>

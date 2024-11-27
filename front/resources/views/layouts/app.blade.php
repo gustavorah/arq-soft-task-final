@@ -35,9 +35,37 @@
     </body>
 
     <script>
-        function inscreverEvento(ref_evento)
+        function inscreverEvento(ref_pessoa, ref_evento)
         {
-            
+            fetch('/inscrever', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ ref_pessoa: ref_pessoa, ref_evento: ref_evento })
+            })
+            .then(async (response) => {
+                const text = await response.text(); // Captura a resposta como texto bruto
+                console.log('Resposta do servidor:', text);
+
+                try {
+                    return JSON.parse(text); // Tenta processar como JSON
+                } catch (e) {
+                    throw new Error('Resposta não é um JSON válido');
+                }
+            })
+            .then(data => {
+                console.log('Dados processados:', data);
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    alert('Erro ao inscrever no evento.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
         }
     </script>
 </html>

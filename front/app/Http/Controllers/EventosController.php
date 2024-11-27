@@ -19,8 +19,9 @@ class EventosController extends Controller
         try
         {
             $eventos = $this->apiGatewayService->getEventos();
+            $user = request()->user();
 
-            return view('eventos', compact('eventos'));
+            return view('eventos', compact('eventos', 'user'));
         }
         catch (Exception $e)
         {
