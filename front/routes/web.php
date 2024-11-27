@@ -12,8 +12,8 @@ Route::get('/', function () {
 
 Route::middleware(['auth','verified'])->group(function () {
     Route::get('/eventos', [EventosController::class,'index'])->name('eventos');
-    Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard');
-    Route::get('/inscricoes', [InscricaoEventoController::class, 'getAllInscricoes']);
+    Route::get('/dashboard', [InscricaoEventoController::class,'getAllInscricoes'])->name('dashboard');
+    // Route::post('/inscrever', /?:);
 });
 
 Route::middleware('auth')->group(function () {

@@ -1,3 +1,4 @@
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -12,12 +13,16 @@
                 <div class="p-6 text-gray-900 w-1/2" style="display: flex; justify-content: space-between">
                     {{ $evento['descricao'] }}
                 
+                    <div onclick="inscreverEvento({{ $evento['id'] }})">
+                        <x-primary-button class="ms-3">
+                            {{ __("Inscrever")}}
+                        </x-primary-button>
+                        <div id="{{$evento['id']}}">
+                            <x-modal-dialog>
 
-                    <x-primary-button class="ms-3">
-                        <a :href="route('inscrever')">
-                            {{ __('Inscrever-se') }}
-                        </a>
-                    </x-primary-button>
+                            </x-modal-dialog>
+                        </div>
+                    </div>
                 </div>
             </div>
             @empty

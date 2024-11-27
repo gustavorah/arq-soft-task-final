@@ -33,4 +33,11 @@
             </main>
         </div>
     </body>
+
+    <script>
+        function inscreverEvento(ref_evento)
+        {
+            
+        }
+    </script>
 </html>

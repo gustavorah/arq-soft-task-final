@@ -24,14 +24,15 @@ class InscricaoEventoController extends Controller
         {
             try
             {
-                $eventos[] = $this->apiGatewayService->getEvento($inscricao['ref_evento']);
+                $eventos = $this->apiGatewayService->getEvento($inscricao['ref_evento']);
             }
             catch (\Exception $e)
             {
                 throw new \Exception("Evento" . $inscricao['ref_evento'] . " não encontrado, ". $e->getMessage());
             }
         }
-
-        return response()->json($eventos);
+        
+        return view("dashboard", compact('eventos'));
+        // return response()->json($eventos);
     }
 }

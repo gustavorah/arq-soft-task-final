@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model cache {
+  key        String @id @db.VarChar(255)
+  value      String
+  expiration Int
+}
+
+model cache_locks {
+  key        String @id @db.VarChar(255)
+  owner      String @db.VarChar(255)
+  expiration Int
+}
+
+model eventos {
+  id               BigInt             @id @default(autoincrement())
+  descricao        String             @db.VarChar(255)
+  dt_cricao        DateTime           @default(dbgenerated("'2024-11-17 17:57:33'::timestamp without time zone")) @db.Timestamp(0)
+  dt_inicio        DateTime?          @db.Timestamp(0)
+  dt_fim           DateTime?          @db.Timestamp(0)
+  inscricao_evento inscricao_evento[]
+}
+
+model failed_jobs {
+  id         BigInt   @id @default(autoincrement())
+  uuid       String   @unique(map: "failed_jobs_uuid_unique") @db.VarChar(255)
+  connection String
+  queue      String
+  payload    String
+  exception  String
+  failed_at  DateTime @default(now()) @db.Timestamp(0)
+}
+
+model inscricao_evento {
+  id         BigInt      @id @default(autoincrement())
+  ref_pessoa BigInt
+  ref_evento BigInt
+  created_at DateTime?   @db.Timestamp(0)
+  updated_at DateTime?   @db.Timestamp(0)
+  eventos    eventos     @relation(fields: [ref_evento], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inscricao_evento_ref_evento_foreign")
+  users      users       @relation(fields: [ref_pessoa], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inscricao_evento_ref_pessoa_foreign")
+  presencas  presencas[]
+}
+
+model job_batches {
+  id             String  @id @db.VarChar(255)
+  name           String  @db.VarChar(255)
+  total_jobs     Int
+  pending_jobs   Int
+  failed_jobs    Int
+  failed_job_ids String
+  options        String?
+  cancelled_at   Int?
+  created_at     Int
+  finished_at    Int?
+}
+
+model jobs {
+  id           BigInt @id @default(autoincrement())
+  queue        String @db.VarChar(255)
+  payload      String
+  attempts     Int    @db.SmallInt
+  reserved_at  Int?
+  available_at Int
+  created_at   Int
+
+  @@index([queue], map: "jobs_queue_index")
+}
+
+model migrations {
+  id        Int    @id @default(autoincrement())
+  migration String @db.VarChar(255)
+  batch     Int
+}
+
+model password_reset_tokens {
+  email      String    @id @db.VarChar(255)
+  token      String    @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+}
+
+model sessions {
+  id            String  @id @db.VarChar(255)
+  user_id       BigInt?
+  ip_address    String? @db.VarChar(45)
+  user_agent    String?
+  payload       String
+  last_activity Int
+
+  @@index([last_activity], map: "sessions_last_activity_index")
+  @@index([user_id], map: "sessions_user_id_index")
+}
+
+model users {
+  id                BigInt             @id @default(autoincrement())
+  name              String             @db.VarChar(255)
+  email             String             @unique(map: "users_email_unique") @db.VarChar(255)
+  email_verified_at DateTime?          @db.Timestamp(0)
+  password          String             @db.VarChar(255)
+  remember_token    String?            @db.VarChar(100)
+  created_at        DateTime?          @db.Timestamp(0)
+  updated_at        DateTime?          @db.Timestamp(0)
+  is_admin          Boolean?           @default(false)
+  inscricao_evento  inscricao_evento[]
+  presencas         presencas[]
+}
+
+model presencas {
+  id                   BigInt           @id @default(autoincrement())
+  ref_pessoa           BigInt
+  ref_inscricao_evento BigInt
+  dt_criacao           DateTime?        @db.Timestamp(0)
+  users                users            @relation(fields: [ref_pessoa], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inscricao_evento_ref_pessoa_foreign")
+  inscricao_evento     inscricao_evento @relation(fields: [ref_inscricao_evento], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "presencas_ref_inscricao_evento")
+}
