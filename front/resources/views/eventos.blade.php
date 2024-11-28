@@ -18,8 +18,13 @@
                             {{ __("Inscrever")}}
                         </x-primary-button>
                         @if ($user['is_admin'])
+                        <a href="{{route('eventos.editar', ['evento' => $evento['id']])}}">
                             <x-primary-button>
                                 {{__('Editar/Marcar Presença')}}
+                            </x-primary-button>
+                        </a>
+                            <x-primary-button color="red">
+                                {{__('Deletar')}}
                             </x-primary-button>
                         @endif
                         <div id="modal-{{$evento['id']}}" class="hidden">

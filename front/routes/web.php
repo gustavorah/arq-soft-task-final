@@ -14,6 +14,8 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('/eventos', [EventosController::class,'index'])->name('eventos');
     Route::get('/dashboard', [InscricaoEventoController::class,'getAllInscricoes'])->name('dashboard');
     Route::post('/inscrever', [InscricaoEventoController::class,'store'])->name('inscrever');
+    Route::get('/eventos/editar/{evento}', [EventosController::class, 'show'])->name('eventos.editar');
+    Route::put('/eventos/atualizar/{evento}', [EventosController::class, 'atualizar'])->name('eventos.atualizar');
 });
 
 // Route::middleware(['auth', 'admin'])->group(function () {
