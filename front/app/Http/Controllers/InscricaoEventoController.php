@@ -20,20 +20,21 @@ class InscricaoEventoController extends Controller
         $user = request()->user();
 
         $inscricoes = $this->apiGatewayService->getInscricoesByUser($user);
-        $eventos = [];
+        // return $inscricoes;
+        $arrEventos = [];
         foreach ($inscricoes as $key => $inscricao) 
         {
             try
             {
-                $eventos = $this->apiGatewayService->getEvento($inscricao['ref_evento']);
+                $arrEventos[] = $this->apiGatewayService->getEvento($inscricao['ref_evento']);
             }
             catch (\Exception $e)
             {
                 throw new \Exception("Evento" . $inscricao['ref_evento'] . " não encontrado, ". $e->getMessage());
             }
         }
-        
-        return view("dashboard", compact('eventos'));
+
+        return view("dashboard", compact('arrEventos'));
     }
 
     public function store(Request $request)

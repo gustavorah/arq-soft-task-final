@@ -14,11 +14,15 @@
                     {{ $evento['descricao'] }}
                 
                     <div>
-                        <x-primary-button class="ms-3">
+                        <x-primary-button class="ms-3" onclick="openModal({{ $evento['id'] }})">
                             {{ __("Inscrever")}}
                         </x-primary-button>
-                        <div id="{{$evento['id']}}">
-                            
+                        @if ($user['is_admin'])
+                            <x-primary-button>
+                                {{__('Editar/Marcar Presença')}}
+                            </x-primary-button>
+                        @endif
+                        <div id="modal-{{$evento['id']}}" class="hidden">
                             <x-modal-dialog :evento="$evento" :user="$user"></x-modal-dialog>
                         </div>
                     </div>

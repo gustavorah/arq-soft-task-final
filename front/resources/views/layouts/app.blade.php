@@ -67,5 +67,21 @@
                 console.error('Erro:', error);
             });
         }
+
+        function openModal(eventoId) {
+            // Exibe o modal correspondente ao evento
+            const modal = document.getElementById(`modal-${eventoId}`);
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function closeModal(eventoId) {
+            // Oculta o modal correspondente ao evento
+            const modal = document.getElementById(`modal-${eventoId}`);
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
     </script>
 </html>
