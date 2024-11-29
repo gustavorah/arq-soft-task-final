@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventosController;
 use App\Http\Controllers\InscricaoEventoController;
+use App\Http\Controllers\PresencaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,7 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::post('/inscrever', [InscricaoEventoController::class,'store'])->name('inscrever');
     Route::get('/eventos/editar/{evento}', [EventosController::class, 'show'])->name('eventos.editar');
     Route::put('/eventos/atualizar/{evento}', [EventosController::class, 'atualizar'])->name('eventos.atualizar');
+    Route::post('/presencas', [PresencaController::class,'store'])->name('presencas.marcar');
 });
 
 // Route::middleware(['auth', 'admin'])->group(function () {

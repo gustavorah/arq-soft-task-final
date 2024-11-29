@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\InscricaoEvento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\In;
 
 class InscricaoEventoController extends Controller
@@ -53,6 +54,14 @@ class InscricaoEventoController extends Controller
     public function getInscricoesByUser(Request $request)
     {
         $inscricoes_eventos = InscricaoEvento::where("ref_pessoa", "=", $request['ref_pessoa'])->get();
+        
+        return response()->json($inscricoes_eventos);
+    }
+
+    public function getAllInscricoesByRefEvento(Request $request)
+    {
+        Log::info($request->all());
+        $inscricoes_eventos = InscricaoEvento::where("ref_evento", "=", $request['ref_evento'])->get();
         
         return response()->json($inscricoes_eventos);
     }

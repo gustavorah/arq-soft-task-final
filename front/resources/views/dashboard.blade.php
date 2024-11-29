@@ -15,9 +15,14 @@
                         </div>
 
                         <div class="p-6">
-                            <x-primary-button color="red">
-                                {{__("Cancelar")}}
-                            </x-primary-button>
+                            {{-- <form method="POST" action="{{ route('eventos.cancelar', ['evento' => $evento['id']]) }}"> --}}
+                                {{-- @csrf --}}
+                                {{-- @method('DELETE') --}}
+
+                                <x-primary-button color="red" :active="!$evento['dt_fim']">
+                                    {{ __("Cancelar") }}
+                                </x-primary-button>
+                            {{-- </form> --}}
                         </div>
                     </div>
                 @endforeach

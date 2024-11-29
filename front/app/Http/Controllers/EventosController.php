@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ApiGatewayService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class EventosController extends Controller
 {
@@ -47,7 +48,17 @@ class EventosController extends Controller
         {
             $evento = $this->getEvento($id);
             $evento = array_shift($evento);
-            return view("eventos.editar", compact("evento"));
+
+            $inscricaoEvento = new InscricaoEventoController($this->apiGatewayService);
+            $inscricoes_evento = $inscricaoEvento->getAllInscricoesByRefEvento($id);
+            
+            foreach ($inscricoes_evento as $index => $inscricao)
+            {
+                $user = $this->apiGatewayService->getUserById($inscricao['ref_pessoa']);
+                $inscricoes_evento[$index]['nome'] = $user['name'];
+            }
+            
+            return view("eventos.editar", compact("evento", "inscricoes_evento"));
         }
         catch (Exception $e)
         {
@@ -68,17 +79,26 @@ class EventosController extends Controller
         $evento = $this->getEvento($id);
 
         // Verifica se o evento existe
-        if (!$evento) {
-            return redirect()->route('eventos.index')->with('error', 'Evento não encontrado');
+        if (!$evento) 
+        {
+            return redirect()->route('eventos')->with('error', 'Evento não encontrado');
         }
 
         // Atualiza os dados do evento
-        $evento->descricao = $validated['descricao'];
-        $evento->dt_inicio = $validated['dt_inicio'] ?? $evento->dt_inicio;
-        $evento->dt_fim = $validated['dt_fim'] ?? $evento->dt_fim;
-        $evento->save();
+        $evento = array_shift($evento); // Extrai o primeiro elemento do array
+        $evento['descricao'] = $validated['descricao'];
+        $evento['dt_inicio'] = isset($validated['dt_inicio']) ? Carbon::parse($validated['dt_inicio'])->format('Y-m-d H:i:s') : $evento['dt_inicio'];
+        $evento['dt_fim'] = isset($validated['dt_fim']) ? Carbon::parse($validated['dt_fim'])->format('Y-m-d H:i:s') : $evento['dt_fim'];
+        
+        try
+        {
+            $return = $this->apiGatewayService->atualizarEvento($evento, $id);
 
-        // Redireciona para a lista de eventos com sucesso
-        return redirect()->route('eventos.index')->with('success', 'Evento atualizado com sucesso!');
+            return redirect()->route('eventos')->with('success', 'Evento atualizado com sucesso!');
+        }
+        catch (Exception $e)
+        {
+            return redirect()->route('eventos.editar')->with('error', 'Não foi possível atualizar o evento');
+        }
     }
 }

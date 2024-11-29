@@ -18,9 +18,9 @@ class InscricaoEventoController extends Controller
     public function getAllInscricoes()
     {
         $user = request()->user();
-
+        
         $inscricoes = $this->apiGatewayService->getInscricoesByUser($user);
-        // return $inscricoes;
+
         $arrEventos = [];
         foreach ($inscricoes as $key => $inscricao) 
         {
@@ -44,6 +44,21 @@ class InscricaoEventoController extends Controller
             $inscricao_evento = $this->apiGatewayService->storeInscricaoEvento($request->all());
 
             return response()->json(['success' => true, 'message' => "Inscrição realizada com sucesso"]);
+        }
+        catch (\Exception $e)
+        {
+            Log::error($e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Erro interno no servidor'], 500);
+        }
+    }
+
+    public function getAllInscricoesByRefEvento($ref_evento)
+    {
+        try
+        {
+            $inscricao_evento = $this->apiGatewayService->getAllInscricoesByRefEvento($ref_evento);
+            
+            return $inscricao_evento;
         }
         catch (\Exception $e)
         {

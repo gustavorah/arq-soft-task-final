@@ -19,6 +19,8 @@ export const presencasRoutes = (app: Elysia) => {
             });
         })
         .post('/api/presencas', async ({ body }) => {
+            console.log(body);
+
             const { ref_pessoa, ref_inscricao_evento } = body as Presenca;
 
             return await prisma.presencas.create({

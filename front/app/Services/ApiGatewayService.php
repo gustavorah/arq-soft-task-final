@@ -62,7 +62,7 @@ class ApiGatewayService
 
     public function getInscricoesByUser($user)
     {
-        return $this->http->post("/inscricao-evento/inscricoes", ["ref_pessoa"=> $user['id']])->json();
+        return $this->http->post("/inscricao-evento/inscricoes-user", ["ref_pessoa"=> $user['id']])->json();
     }
 
     public function getEvento($ref_evento)
@@ -73,6 +73,21 @@ class ApiGatewayService
     public function storeInscricaoEvento($params)
     {
         return $this->http->post('/inscricao-evento', ["ref_pessoa" => $params['ref_pessoa'], 'ref_evento'=> $params['ref_evento']])->json();
+    }
+
+    public function atualizarEvento($evento, $id)
+    {
+        return $this->http->put("/eventos/{$id}", $evento)->json();
+    }
+
+    public function getAllInscricoesByRefEvento($ref_evento)
+    {
+        return $this->http->post("/inscricao-evento/inscricoes", ['ref_evento' => $ref_evento])->json();
+    }
+
+    public function storePresencas($ref_inscricao_evento, $ref_pessoa)
+    {
+        return $this->http->post('/presencas', ['ref_inscricao_evento' => $ref_inscricao_evento, 'ref_pessoa' => $ref_pessoa])->json();
     }
 
     // Helper method to handle errors

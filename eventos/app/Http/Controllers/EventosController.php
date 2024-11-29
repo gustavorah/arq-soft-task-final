@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Eventos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class EventosController extends Controller
 {
@@ -44,6 +45,9 @@ class EventosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        Log::info($request);
+        Log::info('Dados recebidos para atualização:', $request->all());
+        
         $eventos = Eventos::findOrFail($id);
 
         $eventos->update($request->all());
