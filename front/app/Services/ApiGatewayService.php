@@ -87,7 +87,7 @@ class ApiGatewayService
 
     public function storePresencas($ref_inscricao_evento, $ref_pessoa)
     {
-        return $this->http->post('/presencas', ['ref_inscricao_evento' => $ref_inscricao_evento, 'ref_pessoa' => $ref_pessoa])->json();
+        return $this->http->post('/presencas', [$ref_pessoa, $ref_inscricao_evento])->json();
     }
 
     // Helper method to handle errors
