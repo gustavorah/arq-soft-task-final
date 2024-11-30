@@ -12,30 +12,33 @@ class ApiGatewayController extends Controller
         'users' => 'http://127.0.0.1:8000/api',
         'eventos' => 'http://127.0.0.1:8002/api',
         'inscricao-evento' => 'http://127.0.0.1:8004/api',
-        'presencas' => 'http://127.0.0.1:8005/'
-        // Add more services as needed
+        'presencas' => 'http://127.0.0.1:8005/presencas' // Sem "/api"
+        // Adicione mais serviços conforme necessário
     ];
 
     /**
-     * Forward request to appropriate microservice
+     * Encaminha a requisição para o microserviço apropriado
      */
     public function forwardRequest(Request $request, $service, $path = '')
     {
         if (!array_key_exists($service, $this->serviceUrls)) {
-            return response()->json(['error' => 'Service not found'], 404);
+            return response()->json(['error' => 'Serviço não encontrado'], 404);
         }
 
         $serviceUrl = $this->serviceUrls[$service];
+
         $fullUrl = rtrim($serviceUrl, '/') . '/' . ltrim($path, '/');
 
+        Log::info("Encaminhando requisição para: $fullUrl"); // Log para depuração
+
         try {
-            // Get the request method
+            // Obter o método da requisição
             $method = $request->method();
 
-            // Forward the request with its original method
+            // Encaminhar a requisição com o método original
             $response = Http::withHeaders($this->getForwardableHeaders($request));
 
-            // Handle different HTTP methods
+            // Manipular diferentes métodos HTTP
             switch ($method) {
                 case 'GET':
                     $response = $response->get($fullUrl);
@@ -50,16 +53,17 @@ class ApiGatewayController extends Controller
                     $response = $response->delete($fullUrl);
                     break;
                 default:
-                    return response()->json(['error' => 'Method not supported'], 405);
+                    return response()->json(['error' => 'Método não suportado'], 405);
             }
 
-            // Return the response from the service
+            // Retornar a resposta do serviço
             return response()
                 ->json($response->json())
                 ->setStatusCode($response->status());
         } catch (\Exception $e) {
+            Log::error('Erro ao encaminhar requisição: ' . $e->getMessage());
             return response()->json([
-                'error' => 'Service unavailable',
+                'error' => 'Serviço indisponível',
                 'message' => $e->getMessage(),
                 'service' => $service,
                 'url' => $fullUrl
@@ -68,7 +72,7 @@ class ApiGatewayController extends Controller
     }
 
     /**
-     * Get headers that should be forwarded
+     * Obter os cabeçalhos que devem ser encaminhados
      */
     private function getForwardableHeaders(Request $request)
     {
@@ -86,7 +90,7 @@ class ApiGatewayController extends Controller
             }
         }
 
-        // Ensure JSON content type
+        // Garantir que o tipo de conteúdo seja JSON
         $headers['Accept'] = 'application/json';
         $headers['Content-Type'] = 'application/json';
 

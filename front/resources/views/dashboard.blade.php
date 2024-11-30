@@ -7,25 +7,32 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @forelse ($arrEventos as $arr)
-                @foreach ($arr as $evento)
-                    <div class="flex justify-between items-center bg-white overflow-hidden shadow-sm sm:rounded-lg" style="margin: 10px">
-                        <div class="p-6 text-gray-900">
-                            {{ $evento['descricao'] }}
-                        </div>
-
-                        <div class="p-6">
-                            {{-- <form method="POST" action="{{ route('eventos.cancelar', ['evento' => $evento['id']]) }}"> --}}
-                                {{-- @csrf --}}
-                                {{-- @method('DELETE') --}}
-
-                                <x-primary-button color="red" :active="!$evento['dt_fim']">
-                                    {{ __("Cancelar") }}
-                                </x-primary-button>
-                            {{-- </form> --}}
-                        </div>
+            @forelse ($inscricoes as $inscricao)
+                <div class="flex justify-between items-center bg-white overflow-hidden shadow-sm sm:rounded-lg" style="margin: 10px">
+                    <div class="p-6 text-gray-900">
+                        {{ $inscricao['evento']['descricao'] }}
                     </div>
-                @endforeach
+
+                    <div class="p-6">
+                        
+                        <form action="{{ route('certificado.gerar', ['ref_inscricao' => $inscricao['id']]) }}" method="post">
+                            @csrf
+
+                            <x-primary-button color="blue">
+                                {{ __("Gerar Certificado") }}
+                            </x-primary-button>
+                        </form>
+
+                        <form method="POST" action="{{ route('inscricao.cancelar', ['id' => $inscricao['id']]) }}">
+                            @csrf
+                            @method('DELETE')
+
+                            <x-primary-button color="red" :active="!$inscricao['evento']['dt_fim']">
+                                {{ __("Cancelar") }}
+                            </x-primary-button>
+                        </form>
+                    </div>
+                </div>
             @empty
                 <p>Sem eventos para exibir.</p>
             @endforelse

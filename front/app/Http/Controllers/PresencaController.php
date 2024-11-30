@@ -20,19 +20,26 @@ class PresencaController extends Controller
         try
         {
             $presencas = $request->input("presencas");
+            $arrInscricao = [];
+            $arrPessoas   = [];
+            
             foreach($presencas as $ref_inscricao => $ref_pessoa)
             {
-                Log::info($ref_pessoa ." pessoa ". $ref_inscricao ." inscricao");
-                $response = $this->apiGatewayService->storePresencas($ref_inscricao, $ref_pessoa);
-                Log::info($response);
-
+                $arrInscricao = array_merge($arrInscricao, [$ref_inscricao]);
+                $arrPessoas = array_merge($arrPessoas, [$ref_pessoa]);
             }
+            
+            // Agora passamos um único objeto com as duas arrays
+            $response = $this->apiGatewayService->storePresencas(
+                $arrPessoas,
+                $arrInscricao
+            );
             
             return response()->json(['success' => true, 'message' => "Inscrição realizada com sucesso"]);
         }
         catch(\Exception $e)
         {
-            return response()->json(['sucess', $e->getMessage()],500);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 }

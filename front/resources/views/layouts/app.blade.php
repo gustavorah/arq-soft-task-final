@@ -59,8 +59,10 @@
                 console.log('Dados processados:', data);
                 if (data.success) {
                     alert(data.message);
+                    closeModal(ref_evento);
                 } else {
-                    alert('Erro ao inscrever no evento.');
+                    alert('Erro ao inscrever no evento. ' + data.message);
+                    closeModal(ref_evento);
                 }
             })
             .catch(error => {

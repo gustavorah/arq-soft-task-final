@@ -10,4 +10,5 @@ Route::controller(InscricaoEventoController::class)->group(function() {
     Route::post("/", 'store');
     Route::put("/{inscricao_evento}", 'update');
     Route::delete('/{inscricao_evento}','destroy');
+    Route::post("/verificar-inscricao", 'hasInscricaoByUserAndEvento');
 });

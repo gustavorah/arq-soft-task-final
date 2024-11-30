@@ -58,7 +58,7 @@ class LoginRequest extends FormRequest
                 $this->input('email'),
                 $this->input('password')
             );
-        
+            Log::info($response);
             // Verificar o retorno do response
             if ($response['id']) 
             {

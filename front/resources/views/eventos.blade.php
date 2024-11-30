@@ -1,4 +1,3 @@
-
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -7,9 +6,14 @@
     </x-slot>
     
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" style="display: flex">
+        {{-- <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <x-primary-button class="mb-4" color="green" onclick="route('evento.criar')">
+                {{__("Criar evento")}}
+            </x-primary-button>
+        </div> --}}
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" style="display: flex; flex-direction: column; gap: 1rem;">
             @forelse ($eventos as $evento)
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg" style="width: 100%; justify-content: space-between;">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-4" style="width: 100%; justify-content: space-between;">
                 <div class="p-6 text-gray-900 w-1/2" style="display: flex; justify-content: space-between">
                     {{ $evento['descricao'] }}
                 

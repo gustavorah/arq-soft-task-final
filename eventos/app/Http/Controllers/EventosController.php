@@ -14,7 +14,7 @@ class EventosController extends Controller
     public function index()
     {
         $eventos = Eventos::all();
-
+        Log::info('asdasd');
         return response()->json($eventos);
     }
 
@@ -23,6 +23,7 @@ class EventosController extends Controller
      */
     public function store(Request $request)
     {
+        Log::info($request);
         $evento = new Eventos($request->all());
 
         $evento->save();
@@ -33,10 +34,10 @@ class EventosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Eventos $eventos, $id)
+    public function show($id)
     {
         $eventos = Eventos::findOrFail($id);
-
+        Log::info($eventos);
         return response()->json($eventos);
     }
 

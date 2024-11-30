@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\In;
 
+use function Pest\Laravel\json;
+
 class InscricaoEventoController extends Controller
 {
     // public function index()
@@ -53,7 +55,9 @@ class InscricaoEventoController extends Controller
 
     public function getInscricoesByUser(Request $request)
     {
-        $inscricoes_eventos = InscricaoEvento::where("ref_pessoa", "=", $request['ref_pessoa'])->get();
+        $inscricoes_eventos = InscricaoEvento::where("ref_pessoa", $request['ref_pessoa'])
+                                             ->whereNull('dt_cancelamento')
+                                              ->get();
         
         return response()->json($inscricoes_eventos);
     }
@@ -61,8 +65,20 @@ class InscricaoEventoController extends Controller
     public function getAllInscricoesByRefEvento(Request $request)
     {
         Log::info($request->all());
-        $inscricoes_eventos = InscricaoEvento::where("ref_evento", "=", $request['ref_evento'])->get();
+        $inscricoes_eventos = InscricaoEvento::where("ref_evento", "=", $request['ref_evento'])
+                                                ->whereNull('dt_cancelamento')     
+                                                ->get();
         
         return response()->json($inscricoes_eventos);
+    }
+
+    public function hasInscricaoByUserAndEvento(Request $request)
+    {
+        $inscricao_evento = InscricaoEvento::where("ref_evento", "=", $request['ref_evento'])
+                                           ->where("ref_pessoa", '=', $request['ref_pessoa'])
+                                           ->whereNull('dt_cancelamento')
+                                           ->first();
+
+        return $inscricao_evento ? true : false;
     }
 }

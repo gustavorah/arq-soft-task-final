@@ -19,7 +19,7 @@ class ApiGatewayService
         $this->http = Http::baseUrl($this->baseUrl)
             ->withHeaders([
                 'Accept' => 'application/json',
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
             ])
             ->timeout(30);
     }
@@ -67,7 +67,7 @@ class ApiGatewayService
 
     public function getEvento($ref_evento)
     {
-        return $this->http->get('/eventos/{eventos}', ['id'=> $ref_evento])->json();
+        return $this->http->get("/eventos/{$ref_evento}", ['id'=> $ref_evento])->json();
     }
 
     public function storeInscricaoEvento($params)
@@ -85,9 +85,36 @@ class ApiGatewayService
         return $this->http->post("/inscricao-evento/inscricoes", ['ref_evento' => $ref_evento])->json();
     }
 
-    public function storePresencas($ref_inscricao_evento, $ref_pessoa)
+    public function storePresencas($ref_pessoas, $ref_inscricoes)
     {
-        return $this->http->post('/presencas', [$ref_pessoa, $ref_inscricao_evento])->json();
+        return $this->http->post('/presencas', ['ref_pessoas' => $ref_pessoas, 'ref_inscricoes' => $ref_inscricoes])->json();
+    }
+
+    public function hasInscricaoByUserAndEvento($request)
+    {
+        return $this->http->post('/inscricao-evento/verificar-inscricao', $request)->json();
+    }
+
+    public function hasPresencaByUserAndInscricao($ref_pessoa, $ref_inscricao_evento)
+    {
+        $body = [$ref_pessoa, $ref_inscricao_evento];
+        return $this->http->post('/presencas/verificar-presenca', ['body' => $body])->json();
+    }
+
+    public function cancelarInscricao($ref_inscricao)
+    {
+        $dt_cancelamento = date('Y-m-d H:i:s');
+        return $this->http->put("/inscricao-evento/{$ref_inscricao}", ['dt_cancelamento' => $dt_cancelamento])->json();
+    }
+
+    public function getInscricaoById($ref_inscricao)
+    {
+        return $this->http->get("/inscricao-evento/{$ref_inscricao}")->json();
+    }
+
+    public function gerarCertificado($codigo_autenticador)
+    {
+        return $this->http->post("/certificado", ["codigo_autenticador"=> $codigo_autenticador])->json();
     }
 
     // Helper method to handle errors

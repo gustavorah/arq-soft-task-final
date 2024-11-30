@@ -15,5 +15,5 @@ class Eventos extends Model
         'dt_fim'
     ];
 
-    protected $table = 'eventos';
+    protected $table = 'evento';
 }

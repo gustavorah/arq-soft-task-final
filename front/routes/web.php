@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CertificadoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventosController;
 use App\Http\Controllers\InscricaoEventoController;
@@ -12,12 +13,24 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth','verified'])->group(function () {
-    Route::get('/eventos', [EventosController::class,'index'])->name('eventos');
-    Route::get('/dashboard', [InscricaoEventoController::class,'getAllInscricoes'])->name('dashboard');
-    Route::post('/inscrever', [InscricaoEventoController::class,'store'])->name('inscrever');
-    Route::get('/eventos/editar/{evento}', [EventosController::class, 'show'])->name('eventos.editar');
-    Route::put('/eventos/atualizar/{evento}', [EventosController::class, 'atualizar'])->name('eventos.atualizar');
+    Route::controller(EventosController::class)->group(function() {
+        Route::get('/eventos', 'index')->name('eventos');
+        Route::get('/eventos/editar/{evento}',  'show')->name('eventos.editar');
+        Route::put('/eventos/atualizar/{evento}',  'atualizar')->name('eventos.atualizar');
+    });
+
+    Route::controller(InscricaoEventoController::class)->group(function() {
+        Route::get('/dashboard', 'getAllInscricoes')->name('dashboard');
+        Route::post('/inscrever', 'store')->name('inscrever');
+        Route::delete('/inscricao-evento/{id}', 'cancelar')->name('inscricao.cancelar');
+    });
+
+    // Route::controller(Certificado)
     Route::post('/presencas', [PresencaController::class,'store'])->name('presencas.marcar');
+
+    Route::controller(CertificadoController::class)->group(function() {
+        Route::post('/gerar-certificado/{ref_inscricao}', 'gerar')->name('certificado.gerar');
+    });
 });
 
 // Route::middleware(['auth', 'admin'])->group(function () {

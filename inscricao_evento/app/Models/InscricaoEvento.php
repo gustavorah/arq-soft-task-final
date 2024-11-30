@@ -10,6 +10,9 @@ class InscricaoEvento extends Model
 
     protected $fillable = [
         "ref_pessoa",
-        "ref_evento"
+        "ref_evento",
+        "dt_cancelamento"
     ];
+
+    public $timestamps = false;
 }

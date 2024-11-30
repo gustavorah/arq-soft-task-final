@@ -68,6 +68,20 @@
                                     @enderror
                                 </div>
 
+                                {{-- <div class="mb-4">
+                                    <label for="layout_certificado" class="block text-sm font-medium text-gray-700">{{ __('Layout Certificado') }}</label>
+                                    <select id="layout_certificado" name="layout_certificado" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        @foreach($layout_certificado as $layout)
+                                            <option value="{{ $layout['id'] }}" {{ old('layout_certificado', $evento['layout_certificado_id']) == $layout['id'] ? 'selected' : '' }}>
+                                                {{ $layout['nome'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('layout_certificado')
+                                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                                    @enderror
+                                </div> --}}
+
                                 <x-primary-button color='green'>
                                     {{ __('Atualizar Evento') }}
                                 </x-primary-button>
