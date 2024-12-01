@@ -3,7 +3,7 @@
 setlocal EnableDelayedExpansion
 
 :: Lista de projetos
-set projects=users api-gateway eventos front inscricao_evento presencas
+set projects=users api-gateway eventos front inscricao_evento presencas certificado
 
 :: Porta inicial
 set base_port=8000

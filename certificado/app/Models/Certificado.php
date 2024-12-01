@@ -11,4 +11,6 @@ class Certificado extends Model
     protected $fillable = [
         'codigo_autenticador'
     ];
+
+    public $timestamps = false;
 }

@@ -29,20 +29,12 @@ class InscricaoEventoController extends Controller
             try
             {
                 $inscricoes[$key]['evento'] = $this->apiGatewayService->getEvento($inscricao['ref_evento']);
-                // $arrEventos[] = $this->apiGatewayService->getEvento($inscricao['ref_evento']);
-                // $var = $this->apiGatewayService->hasPresencaByUserAndInscricao($user['id'], $key);
-                // dd($var);
-                // if ($this->apiGatewayService->hasPresencaByUserAndInscricao($user['id'], $key))
-                // {
-                //     $arrEventos[]['fl_gerar_certificado'] = true;
-                // }
             }
             catch (\Exception $e)
             {
                 throw new \Exception("Evento" . $inscricao['ref_evento'] . " não encontrado, ". $e->getMessage());
             }
         }
-        // dd($inscricoes);
         return view("dashboard", compact('inscricoes'));
     }
 

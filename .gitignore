@@ -2,3 +2,5 @@
 */.env
 */vendor
 /vendor/
+*/tmp
+*.log

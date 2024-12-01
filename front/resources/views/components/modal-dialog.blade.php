@@ -6,7 +6,7 @@
     <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 justify-center">
       <div class="sm:flex sm:items-start justify-center">
         <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-          <h3 class="text-base font-semibold text-gray-900" id="modal-title">Inscrição no evento {{ $evento['descricao'] }} {{ $user['name'] }}</h3>
+          <h3 class="text-base font-semibold text-gray-900" id="modal-title">Inscrição no evento {{ $evento['descricao'] }}</h3>
         </div>
       </div>
     </div>

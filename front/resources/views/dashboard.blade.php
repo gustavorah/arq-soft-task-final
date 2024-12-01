@@ -15,7 +15,7 @@
 
                     <div class="p-6">
                         
-                        <form action="{{ route('certificado.gerar', ['ref_inscricao' => $inscricao['id']]) }}" method="post">
+                        <form id="formGerarCertificado" style="all: unset" action="{{ route('certificado.gerar', ['ref_inscricao' => $inscricao['id']]) }}" method="post">
                             @csrf
 
                             <x-primary-button color="blue">
@@ -23,7 +23,7 @@
                             </x-primary-button>
                         </form>
 
-                        <form method="POST" action="{{ route('inscricao.cancelar', ['id' => $inscricao['id']]) }}">
+                        <form style="all: unset" method="POST" action="{{ route('inscricao.cancelar', ['id' => $inscricao['id']]) }}">
                             @csrf
                             @method('DELETE')
 

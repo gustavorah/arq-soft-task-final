@@ -112,9 +112,9 @@ class ApiGatewayService
         return $this->http->get("/inscricao-evento/{$ref_inscricao}")->json();
     }
 
-    public function gerarCertificado($codigo_autenticador)
+    public function gerarCertificado($codigo_autenticador, $evento)
     {
-        return $this->http->post("/certificado", ["codigo_autenticador"=> $codigo_autenticador])->json();
+        return $this->http->post("/certificado", ["codigo_autenticador"=> $codigo_autenticador, 'evento' => $evento])->json();
     }
 
     // Helper method to handle errors

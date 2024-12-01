@@ -22,6 +22,11 @@
                             {{ __("Inscrever")}}
                         </x-primary-button>
                         @if ($user['is_admin'])
+                        {{-- <a href="{{route('eventos.editar', ['evento' => $evento['id']])}}"> --}}
+                            <x-primary-button>
+                                {{__('Inscrever Pessoa')}}
+                            </x-primary-button>
+                        {{-- </a> --}}
                         <a href="{{route('eventos.editar', ['evento' => $evento['id']])}}">
                             <x-primary-button>
                                 {{__('Editar/Marcar Presença')}}

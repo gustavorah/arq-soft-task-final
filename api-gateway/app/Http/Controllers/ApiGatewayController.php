@@ -12,8 +12,9 @@ class ApiGatewayController extends Controller
         'users' => 'http://127.0.0.1:8000/api',
         'eventos' => 'http://127.0.0.1:8002/api',
         'inscricao-evento' => 'http://127.0.0.1:8004/api',
-        'presencas' => 'http://127.0.0.1:8005/presencas' // Sem "/api"
-        // Adicione mais serviços conforme necessário
+        'presencas' => 'http://127.0.0.1:8005/presencas', // Sem "/api"
+        'certificado' => 'http://127.0.0.1:8006/api',
+        'mail' => 'http://127.0.0.1:8007/api'
     ];
 
     /**
