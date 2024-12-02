@@ -57,6 +57,8 @@ class ApiGatewayService
 
     public function authenticateUser($email, $password)
     {
+        Log::info($email);
+        Log::info(md5($password));
         return $this->http->post('/users/auth', ['email' => $email, 'password' => md5($password)])->json();
     }
 

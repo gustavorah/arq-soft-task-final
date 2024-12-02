@@ -67,6 +67,9 @@ class UserController extends Controller
     {
         $user = User::where("email", $request->email)->first();
 
+        Log::info($user);
+        Log::info($request->password);
+        Log::info($user->password);
         if (empty($user) || $request->password !== $user->password) {
             return response()->json([
                 'message' => 'Credenciais inválidas',

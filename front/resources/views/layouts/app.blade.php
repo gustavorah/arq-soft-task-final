@@ -70,10 +70,28 @@
             });
         }
 
-        function openModal(eventoId) {
-            // Exibe o modal correspondente ao evento
-            const modal = document.getElementById(`modal-${eventoId}`);
-            if (modal) {
+        function openModal(eventoId, userId) {
+            const isOfflineMode = localStorage.getItem('offline') === 'true';
+            if (isOfflineMode) {
+                // Em modo offline, salva diretamente no localStorage
+                let dadosOficiais = localStorage.getItem('dadosOficiais') ? JSON.parse(localStorage.getItem('dadosOficiais')) : []; 
+
+                const verificar_inscricao = dadosOficiais.inscricao_evento.find(inscricao => inscricao.ref_evento === eventoId && inscricao.ref_pessoa === userId);
+                if (verificar_inscricao) {
+                    alert('Você já está inscrito neste evento');
+                    return false;
+                }
+                
+                const inscricao = {
+                    ref_evento: eventoId,
+                    ref_pessoa: userId,
+                    dt_inscricao: new Date().toISOString()
+                };
+
+                dadosOficiais.inscricao_evento.push(inscricao);
+                localStorage.setItem('dadosOficiais', JSON.stringify(dadosOficiais));
+            } else {
+                const modal = document.getElementById(`modal-${eventoId}`);
                 modal.classList.remove('hidden');
             }
         }
