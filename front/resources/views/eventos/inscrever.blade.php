@@ -25,6 +25,18 @@
                         </x-primary-button>
                     </div>
                 </form>
+
+                @if (isset($error))
+                    <script>
+                        alert('Usuário já possui inscrição neste evento');
+                    </script>
+                @endif
+
+                @if (isset($success))
+                    <script>
+                        alert('Inscrição realizada com sucesso');
+                    </script>
+                @endif
             </div>
         </div>
     </div>

@@ -7,20 +7,36 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class EventosController extends Controller
 {
     private $apiGatewayService;
+    private $offline = false;
 
     public function __construct(ApiGatewayService $apiGatewayService)
     {
         $this->apiGatewayService = $apiGatewayService;
+        $this->offline = Session::get('offline', false);
     }
+
+    public function isOffline()
+    {
+        return $this->offline;
+    }
+
     public function index()
     {
         try
         {
-            $eventos = $this->apiGatewayService->getEventos();
+            if ($this->offline)
+            {
+                $eventos = $this->getEventosOffline();
+            }
+            else
+            {
+                $eventos = $this->apiGatewayService->getEventos();
+            }
             $user = request()->user();
 
             return view('eventos', compact('eventos', 'user'));
@@ -31,11 +47,24 @@ class EventosController extends Controller
         }
     }
 
+    public function getEventosOffline()
+    {
+        $localStorage = Session::get('dados_offline');
+        return $localStorage['evento'];
+    }
+
     public function getEvento($id)
     {
         try
         {
-            return $this->apiGatewayService->getEvento($id);
+            if ($this->offline)
+            {
+                $evento = $this->getEventoOffline($id);
+            }
+            else
+            {
+                return $this->apiGatewayService->getEvento($id);
+            }
         }
         catch (Exception $e)
         {
@@ -43,11 +72,24 @@ class EventosController extends Controller
         }
     }
 
+    public function getEventoOffline($id)
+    {
+        $localStorage = Session::get('dados_offline');
+        return $localStorage['evento'][$id];
+    }
+
     public function show($id)
     {
         try
         {
-            $evento = $this->getEvento($id);
+            if ($this->offline)
+            {
+                $evento = $this->getEventoOffline($id);
+            }
+            else
+            {
+                $evento = $this->getEvento($id);
+            }
             
             $inscricaoEvento = new InscricaoEventoController($this->apiGatewayService);
             $inscricoes_evento = $inscricaoEvento->getAllInscricoesByRefEvento($id);
@@ -92,7 +134,7 @@ class EventosController extends Controller
 
         // Atualiza os dados do evento
         // $evento = $evento; // Extrai o primeiro elemento do array
-        Log::info($validated);
+
         $evento['descricao'] = $validated['descricao'];
         $evento['dt_inicio'] = isset($validated['dt_inicio']) ? Carbon::parse($validated['dt_inicio'])->format('Y-m-d H:i:s') : $evento['dt_inicio'];
         $evento['dt_fim'] = isset($validated['dt_fim']) ? Carbon::parse($validated['dt_fim'])->format('Y-m-d H:i:s') : $evento['dt_fim'];

@@ -12,6 +12,13 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+Route::controller(CertificadoController::class)->group(function() {
+    Route::get('/certificado/autenticar', function () {
+        return view('certificado.autenticar');
+    })->name('certificado.autenticar');
+    Route::post('/certificado/autenticar', 'autenticar');
+});
+
 Route::middleware(['auth','verified'])->group(function () {
     Route::controller(EventosController::class)->group(function() {
         Route::get('/eventos', 'index')->name('eventos');

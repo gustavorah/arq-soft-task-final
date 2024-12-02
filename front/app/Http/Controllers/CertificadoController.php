@@ -34,6 +34,7 @@ class CertificadoController extends Controller
 
             $pdf = base64_decode($resposta['base64']);
             $caminho = $resposta['caminho'];
+            Log::info($caminho);
             if (! file_exists(storage_path("tmp/$caminho")))
             {
                 file_put_contents(storage_path("tmp/$caminho"), $pdf);
@@ -47,6 +48,32 @@ class CertificadoController extends Controller
         catch(\Exception $e)
         {
             return response()->json(['Não foi possível gerar o certificado, erro: ' . $e->getMessage()],404);
+        }
+    }
+
+    public function autenticar(Request $request)
+    {
+        try
+        {
+            $codigo_autenticador = $request->input('codigo_autenticador');
+            $autenticado = $this->apiGatewayService->autenticarCertificado($codigo_autenticador);
+            Log::info($autenticado);
+            if ($autenticado)
+            {
+                Log::info('Autenticado');
+                $msg = 'Certificado autenticado com sucesso!';
+            }
+            else
+            {
+                $msg = 'Não foi possível autenticar o certificado!';
+            }
+
+            return view('certificado.autenticar', compact('msg'));
+        }
+        catch(\Exception $e)
+        {
+            $msg = 'Não foi possível autenticar o certificado, erro: ' . $e->getMessage();
+            return view('certificado.autenticar', compact('msg'));
         }
     }
 }

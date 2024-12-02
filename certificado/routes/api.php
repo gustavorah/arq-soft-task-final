@@ -10,4 +10,5 @@ Route::controller(CertificadoController::class)->group(function () {
     Route::post('/', 'store');
     Route::put('/{certificado}', 'update');
     Route::delete('/{certificado}', 'destroy');
+    Route::post('/auth', 'autenticar');
 });

@@ -111,4 +111,15 @@ class CertificadoController extends Controller
         
         return true;
     }
+
+    public function autenticar(Request $request)
+    {
+        Log::info('Autenticando...');
+        Log::info($request->all());
+        $codigo_autenticador = $request->input('codigo_autenticador');
+
+        $certificado = Certificado::where('codigo_autenticador', $codigo_autenticador)->first();
+        Log::info($certificado);
+        return $certificado ? true : false;
+    }
 }

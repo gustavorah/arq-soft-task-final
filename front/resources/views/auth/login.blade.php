@@ -2,6 +2,13 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <!-- Botão para sincronizar dados -->
+    <div class="mb-4">
+        <x-primary-button type="button" onclick="sincronizarDados()" class="w-full justify-center">
+            {{ __('Sincronizar Dados do Banco Oficial') }}
+        </x-primary-button>
+    </div>
+
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
@@ -34,4 +41,29 @@
             </x-primary-button>
         </div>
     </form>
+
+    <!-- Script para sincronização -->
+    <script>
+        async function sincronizarDados() {
+            try {
+                const response = await fetch('/api/sincronizar-dados', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro ao sincronizar dados');
+                }
+
+                const dados = await response.json();
+                localStorage.setItem('dadosOficiais', JSON.stringify(dados));
+                alert('Dados sincronizados com sucesso!');
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao sincronizar dados. Por favor, tente novamente.');
+            }
+        }
+    </script>
 </x-guest-layout>

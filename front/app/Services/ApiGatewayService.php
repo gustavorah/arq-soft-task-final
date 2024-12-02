@@ -21,7 +21,7 @@ class ApiGatewayService
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ])
-            ->timeout(30);
+            ->timeout(60);
     }
 
     // Users endpoints
@@ -119,6 +119,11 @@ class ApiGatewayService
     public function gerarCertificado($codigo_autenticador, $evento)
     {
         return $this->http->post("/certificado", ["codigo_autenticador"=> $codigo_autenticador, 'evento' => $evento])->json();
+    }
+
+    public function autenticarCertificado($codigo_autenticador)
+    {
+        return $this->http->post('/certificado/auth', ['codigo_autenticador' => $codigo_autenticador])->json();
     }
 
     public function sendEmail()

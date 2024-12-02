@@ -90,29 +90,32 @@
     const form = document.getElementById('formGerarCertificado');
 
     // Adicionar o evento de submit para o formulário
-    form.addEventListener('submit', function(event) {
-        // Impedir que o formulário seja enviado normalmente (sem recarregar a página)
-        event.preventDefault();
-
-        // Criar o FormData para enviar os dados do formulário
-        const formData = new FormData(form);
-
-        // Enviar a requisição AJAX usando fetch
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => response.blob()) // Esperar a resposta como blob (arquivo)
-        .then(blob => {
-            // Criar um link temporário para fazer o download do arquivo
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'certificado.pdf'; // Defina o nome do arquivo para o download
-            link.click(); // Simular o clique para iniciar o download
-        })
-        .catch(error => {
-            console.error('Erro ao gerar o certificado:', error);
+    if (form)
+    {
+        form.addEventListener('submit', function(event) {
+            // Impedir que o formulário seja enviado normalmente (sem recarregar a página)
+            event.preventDefault();
+    
+            // Criar o FormData para enviar os dados do formulário
+            const formData = new FormData(form);
+    
+            // Enviar a requisição AJAX usando fetch
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.blob()) // Esperar a resposta como blob (arquivo)
+            .then(blob => {
+                // Criar um link temporário para fazer o download do arquivo
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'certificado.pdf'; // Defina o nome do arquivo para o download
+                link.click(); // Simular o clique para iniciar o download
+            })
+            .catch(error => {
+                console.error('Erro ao gerar o certificado:', error);
+            });
         });
-    });
+    }
     </script>
 </html>
