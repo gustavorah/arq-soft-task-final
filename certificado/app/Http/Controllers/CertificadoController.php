@@ -32,14 +32,14 @@ class CertificadoController extends Controller
         Log::info('Codigo '. $codigo_autenticador);
         
         $caminhoRelativo = 'certificados/' . $codigo_autenticador . '.pdf';
-        $caminhoCompleto = storage_path('app/public/' . $caminhoRelativo);
-        Log::info($caminhoCompleto);
-        Log::info($caminhoRelativo);
+        $caminhoCompleto = storage_path('app/public' . $caminhoRelativo);
 
-        if (Storage::exists($caminhoCompleto) || Storage::exists($caminhoRelativo)) {
+        if (Storage::disk('public')->exists($caminhoCompleto) || Storage::disk('public')->exists($caminhoRelativo)) 
+        {
+            Log::info('sdfjksdf');
             // Codificar em Base64 o conteúdo do arquivo existente
-
-            $conteudoBase64 = base64_encode(Storage::get($caminhoRelativo));
+            $conteudoBase64 = base64_encode(Storage::disk('public')->get($caminhoRelativo));
+            Log::info(''. $conteudoBase64);
             return response()->json([
                 'caminho' => $caminhoRelativo,
                 'base64' => $conteudoBase64
@@ -49,14 +49,15 @@ class CertificadoController extends Controller
         // Gerar PDF e salvar
         $this->gerarPDF($codigo_autenticador, $evento);
 
-        if (Storage::exists($caminhoCompleto) || Storage::exists($caminhoRelativo)) {
-            $conteudoBase64 = base64_encode(Storage::get($caminhoRelativo));
+        if (Storage::disk('public')->exists($caminhoCompleto) || Storage::disk('public')->exists($caminhoRelativo)) 
+        {
+            Log::info('sdfjkssdf');
+            $conteudoBase64 = base64_encode(Storage::disk('public')->get($caminhoRelativo));
             return response()->json([
                 'caminho' => $caminhoRelativo,
                 'base64' => $conteudoBase64
             ]);
         }
-
         return response()->json(['error' => 'Erro ao gerar o certificado'], 500);
     }
 
@@ -92,7 +93,6 @@ class CertificadoController extends Controller
         $caminhoCompleto = 'app/public/certificados/' . $codigo_autenticador . '.pdf';
 
         if (Storage::exists($caminhoCompleto)) {
-            Log::info("aslkdjas");
             return true;
         }
 
@@ -105,11 +105,10 @@ class CertificadoController extends Controller
         $layout = $evento['layout_certificado'] ?? 'primeiroLayout';
 
         $pdf = Pdf::loadView($layout, $dados);
-        Log::info("aslkdjas");
 
         // Salvar o arquivo no caminho correto
-        $pdf->save(storage_path($caminhoCompleto));
-
+        $return = $pdf->save(storage_path($caminhoCompleto));
+        
         return true;
     }
 }

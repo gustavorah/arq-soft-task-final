@@ -1,22 +1,17 @@
 {
-  "name": "presencas",
-  "version": "1.0.50",
-  "scripts": {
-    "dev": "bun --watch src/index.ts",
-    "build": "bun build src/index.ts --target bun --outdir ./dist",
-    "start": "NODE_ENV=production bun dist/index.js",
-    "test": "bun test"
-  },
-  "dependencies": {
-    "@prisma/client": "5.22.0",
-    "elysia": "latest"
-  },
-  "devDependencies": {
-    "bun-types": "latest",
-    "prisma": "^5.22.0"
-  },
-  "module": "src/index.js",
-  "compilerOptions": {
-    "strict": true
-  }
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite"
+    },
+    "devDependencies": {
+        "autoprefixer": "^10.4.20",
+        "axios": "^1.7.4",
+        "concurrently": "^9.0.1",
+        "laravel-vite-plugin": "^1.0",
+        "postcss": "^8.4.47",
+        "tailwindcss": "^3.4.13",
+        "vite": "^5.0"
+    }
 }

@@ -14,7 +14,7 @@ class ApiGatewayService
 
     public function __construct()
     {
-        $this->baseUrl = env('URL_API_GATEWAY', 'http://api-gateway:8000/api');
+        $this->baseUrl = env('URL_API_GATEWAY', 'http://127.0.0.1:8001/api');
 
         $this->http = Http::baseUrl($this->baseUrl)
             ->withHeaders([
@@ -33,6 +33,11 @@ class ApiGatewayService
     public function getUserById($id)
     {
         return $this->http->get("/users/{$id}")->json();
+    }
+
+    public function getUserByEmail($email)
+    {
+        return $this->http->post("/users/email", ['email' => $email])->json();
     }
 
     public function createUser(array $userData)
@@ -87,7 +92,7 @@ class ApiGatewayService
 
     public function storePresencas($ref_pessoas, $ref_inscricoes)
     {
-        return $this->http->post('/presencas', ['ref_pessoas' => $ref_pessoas, 'ref_inscricoes' => $ref_inscricoes])->json();
+        return $this->http->post('/presencas', ['ref_pessoa' => $ref_pessoas, 'ref_inscricao_evento' => $ref_inscricoes])->json();
     }
 
     public function hasInscricaoByUserAndEvento($request)
@@ -97,8 +102,7 @@ class ApiGatewayService
 
     public function hasPresencaByUserAndInscricao($ref_pessoa, $ref_inscricao_evento)
     {
-        $body = [$ref_pessoa, $ref_inscricao_evento];
-        return $this->http->post('/presencas/verificar-presenca', ['body' => $body])->json();
+        return $this->http->post('/presencas/verificar-presenca', ['ref_pessoa' => $ref_pessoa, 'ref_inscricao_evento' => $ref_inscricao_evento])->json();
     }
 
     public function cancelarInscricao($ref_inscricao)
@@ -115,6 +119,11 @@ class ApiGatewayService
     public function gerarCertificado($codigo_autenticador, $evento)
     {
         return $this->http->post("/certificado", ["codigo_autenticador"=> $codigo_autenticador, 'evento' => $evento])->json();
+    }
+
+    public function sendEmail()
+    {
+        return $this->http->get('/mail')->json();
     }
 
     // Helper method to handle errors

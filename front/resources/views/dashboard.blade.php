@@ -15,13 +15,15 @@
 
                     <div class="p-6">
                         
-                        <form id="formGerarCertificado" style="all: unset" action="{{ route('certificado.gerar', ['ref_inscricao' => $inscricao['id']]) }}" method="post">
-                            @csrf
+                        {{-- @if ($inscricao['evento']['pode_gerar'])     --}}
+                            <form id="formGerarCertificado" style="all: unset" action="{{ route('certificado.gerar', ['ref_inscricao' => $inscricao['id']]) }}" method="post">
+                                @csrf
 
-                            <x-primary-button color="blue">
-                                {{ __("Gerar Certificado") }}
-                            </x-primary-button>
-                        </form>
+                                <x-primary-button color="blue">
+                                    {{ __("Gerar Certificado") }}
+                                </x-primary-button>
+                            </form>
+                        {{-- @endif --}}
 
                         <form style="all: unset" method="POST" action="{{ route('inscricao.cancelar', ['id' => $inscricao['id']]) }}">
                             @csrf

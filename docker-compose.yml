@@ -85,7 +85,9 @@ services:
 
      # Serviço do PostgreSQL
   postgres:
-    image: postgres:16
+    build:
+      context: .
+      dockerfile: Dockerfile # Certifique-se de que o nome do Dockerfile está correto
     container_name: psql-db
     environment:
       POSTGRES_USER: eventos

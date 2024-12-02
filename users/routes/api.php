@@ -10,5 +10,6 @@ Route::controller(UserController::class)->group(function () {
     Route::put('/{user}', 'update');
     Route::delete('/{user}', 'destroy');
     Route::post('/auth', 'authenticate');
+    Route::post('/email', 'getUserByEmail');
 });
 

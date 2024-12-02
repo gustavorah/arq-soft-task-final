@@ -6,6 +6,7 @@ use App\Services\ApiGatewayService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class EventosController extends Controller
 {
@@ -47,15 +48,20 @@ class EventosController extends Controller
         try
         {
             $evento = $this->getEvento($id);
-            $evento = array_shift($evento);
-
+            
             $inscricaoEvento = new InscricaoEventoController($this->apiGatewayService);
             $inscricoes_evento = $inscricaoEvento->getAllInscricoesByRefEvento($id);
-            
+
             foreach ($inscricoes_evento as $index => $inscricao)
             {
                 $user = $this->apiGatewayService->getUserById($inscricao['ref_pessoa']);
                 $inscricoes_evento[$index]['nome'] = $user['name'];
+                $inscricoes_evento[$index]['email'] = $user['email'];
+
+                if ($this->apiGatewayService->hasPresencaByUserAndInscricao($inscricao['ref_pessoa'], $inscricao['id']))
+                {
+                    unset($inscricoes_evento[$index]);
+                }
             }
             
             return view("eventos.editar", compact("evento", "inscricoes_evento"));
@@ -85,7 +91,8 @@ class EventosController extends Controller
         }
 
         // Atualiza os dados do evento
-        $evento = array_shift($evento); // Extrai o primeiro elemento do array
+        // $evento = $evento; // Extrai o primeiro elemento do array
+        Log::info($validated);
         $evento['descricao'] = $validated['descricao'];
         $evento['dt_inicio'] = isset($validated['dt_inicio']) ? Carbon::parse($validated['dt_inicio'])->format('Y-m-d H:i:s') : $evento['dt_inicio'];
         $evento['dt_fim'] = isset($validated['dt_fim']) ? Carbon::parse($validated['dt_fim'])->format('Y-m-d H:i:s') : $evento['dt_fim'];
@@ -100,5 +107,12 @@ class EventosController extends Controller
         {
             return redirect()->route('eventos.editar')->with('error', 'Não foi possível atualizar o evento');
         }
+    }
+
+    public function inscreverPessoa($ref_evento)
+    {
+        $evento = $this->getEvento($ref_evento);
+
+        return view('eventos.inscrever', compact( 'evento'));
     }
 }

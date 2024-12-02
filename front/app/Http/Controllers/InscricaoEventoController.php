@@ -29,6 +29,14 @@ class InscricaoEventoController extends Controller
             try
             {
                 $inscricoes[$key]['evento'] = $this->apiGatewayService->getEvento($inscricao['ref_evento']);
+                if ($inscricoes[$key]['evento']['dt_fim'] < date('Y-m-d H:i:s'))
+                {
+                    $inscricoes[$key]['evento']['pode_gerar'] = true;
+                }
+                else
+                {
+                    $inscricoes[$key]['evento']['pode_gerar'] = false;
+                }
             }
             catch (\Exception $e)
             {
@@ -48,6 +56,41 @@ class InscricaoEventoController extends Controller
             }
 
             $inscricao_evento = $this->apiGatewayService->storeInscricaoEvento($request->all());
+
+            $this->apiGatewayService->sendEmail();
+            
+            return response()->json(['success' => true, 'message' => "Inscrição realizada com sucesso"]);
+        }
+        catch (\Exception $e)
+        {
+            Log::error($e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Erro interno no servidor'], 500);
+        }
+    }
+
+    public function storeRapido(Request $request)
+    {
+        try
+        {
+            $email = $request->input('email');
+            $ref_evento = $request->input('evento_id');
+            
+            $user = $this->apiGatewayService->getUserByEmail($email);
+
+            if ($user && $this->apiGatewayService->hasInscricaoByUserAndEvento(['ref_pessoa' => $user['id'], 'ref_evento' => $ref_evento]))
+            {
+                return response()->json(['sucess' => false, 'message' => 'Usuário já possui inscrição neste evento']);
+            }
+
+            if (empty($user))
+            {
+                $user = $this->apiGatewayService->createUser(['email' => $email, 'password' => md5('teste')]);
+            }
+
+            $data = ['ref_pessoa' =>$user['id'], 'ref_evento' => $ref_evento];
+            $inscricao_evento = $this->apiGatewayService->storeInscricaoEvento($data);
+
+            $this->apiGatewayService->sendEmail();
 
             return response()->json(['success' => true, 'message' => "Inscrição realizada com sucesso"]);
         }

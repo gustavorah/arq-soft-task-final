@@ -31,7 +31,7 @@ class CertificadoController extends Controller
 
             $evento = $this->apiGatewayService->getEvento($inscricao['ref_evento']);
             $resposta = $this->apiGatewayService->gerarCertificado($codigo_autenticador, $evento);
-            
+
             $pdf = base64_decode($resposta['base64']);
             $caminho = $resposta['caminho'];
             if (! file_exists(storage_path("tmp/$caminho")))

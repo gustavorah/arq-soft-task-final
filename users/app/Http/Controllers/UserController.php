@@ -6,6 +6,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -72,6 +73,13 @@ class UserController extends Controller
             ], 401);
         }
 
+        return response()->json($user);
+    }
+
+    public function getUserByEmail(Request $request)
+    {
+        $user = User::where('email', $request['email'])->first();
+        
         return response()->json($user);
     }
 }

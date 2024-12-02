@@ -34,6 +34,7 @@
             <div id="tab-content" class="mt-4">
                 <!-- Aba 1: Editar Evento -->
                 <div id="conteudo-editar" class="tab-pane">
+
                     <form action="{{ route('eventos.atualizar', ['evento' => $evento['id']]) }}" method="POST">
                         @csrf
                         @method('PUT')
@@ -99,12 +100,13 @@
                             <div class="p-6 text-gray-900">
                                 <h3 class="text-lg font-semibold mb-4">{{ __('Marcar Presenças') }}</h3>
                                 
+                                <input type="hidden" name="evento_id" value="{{ $evento['id'] }}">
                                 <!-- Lista de usuários inscritos -->
                                 <div class="space-y-4">
                                     @foreach ($inscricoes_evento as $inscricao)
                                         <div class="flex items-center">
                                             <input type="checkbox" name="presencas[{{$inscricao['id']}}]" value="{{ $inscricao['ref_pessoa'] }}" class="mr-2">
-                                            <span>{{ $inscricao['nome'] }}</span>
+                                            <span>{{ $inscricao['email'] }}</span>
                                         </div>
                                     @endforeach
                                 </div>

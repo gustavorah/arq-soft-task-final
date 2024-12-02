@@ -13,5 +13,7 @@
     <p>{{ $conteudo }}</p>
 
     <p>{{ $codigo_autenticador }}</p>
+
+    <p>http://127.0.0.1/8003/certificado/auth</p>
 </body>
 </html>
