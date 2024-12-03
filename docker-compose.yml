@@ -7,7 +7,7 @@ services:
     volumes:
       - ./users:/var/www
     working_dir: /var/www
-    command: ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+    command: [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]
     depends_on:
       - postgres
 
@@ -19,7 +19,7 @@ services:
     volumes:
       - ./api-gateway:/var/www
     working_dir: /var/www
-    command: ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+    command: [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]
     depends_on:
       - postgres
 
@@ -31,7 +31,7 @@ services:
     volumes:
       - ./eventos:/var/www
     working_dir: /var/www
-    command: ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+    command: [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]
     depends_on:
       - postgres
 
@@ -43,7 +43,7 @@ services:
     volumes:
       - ./front:/var/www
     working_dir: /var/www
-    command: ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+    command: [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]
     depends_on:
       - postgres
 
@@ -55,7 +55,7 @@ services:
     volumes:
       - ./inscricao_evento:/var/www
     working_dir: /var/www
-    command: ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+    command: [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]
     depends_on:
       - postgres
 
@@ -67,7 +67,7 @@ services:
     volumes:
       - ./presencas:/var/www
     working_dir: /var/www
-    command: ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+    command: [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]
     depends_on:
       - postgres
 
@@ -79,11 +79,10 @@ services:
     volumes:
       - ./certificado:/var/www
     working_dir: /var/www
-    command: ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+    command: [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]
     depends_on:
       - postgres
-
-     # Serviço do PostgreSQL
+    # Serviço do PostgreSQL
   postgres:
     build:
       context: .

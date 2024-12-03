@@ -14,7 +14,7 @@ class ApiGatewayService
 
     public function __construct()
     {
-        $this->baseUrl = env('URL_API_GATEWAY', 'http://127.0.0.1:8001/api');
+        $this->baseUrl = env('URL_API_GATEWAY', 'http://api-gateway:8000/api');
 
         $this->http = Http::baseUrl($this->baseUrl)
             ->withHeaders([

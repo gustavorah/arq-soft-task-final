@@ -9,18 +9,18 @@ use Illuminate\Support\Facades\Log;
 class ApiGatewayController extends Controller
 {
     protected $serviceUrls = [
-        'users' => 'http://127.0.0.1:8000/api',
-        'eventos' => 'http://127.0.0.1:8002/api',
-        'inscricao-evento' => 'http://127.0.0.1:8004/api',
-        'presencas' => 'http://127.0.0.1:8005/api', // Sem "/api"
-        'certificado' => 'http://127.0.0.1:8006/api',
-        'mail' => 'http://127.0.0.1:8007/api'
-        // 'users' => 'http://users:8000/api',
-        // 'eventos' => 'http://eventos:8000/api',
-        // 'inscricao-evento' => 'http://inscricao_evento:8000/api',
-        // 'presencas' => 'http://presencas:8000/presencas', // Sem "/api"
-        // 'certificado' => 'http://certificado:8000/api',
-        // 'mail' => 'http://mail:8000/api'
+        // 'users' => 'http://127.0.0.1:8000/api',
+        // 'eventos' => 'http://127.0.0.1:8002/api',
+        // 'inscricao-evento' => 'http://127.0.0.1:8004/api',
+        // 'presencas' => 'http://127.0.0.1:8005/api',
+        // 'certificado' => 'http://127.0.0.1:8006/api',
+        // 'mail' => 'http://127.0.0.1:8007/api'
+        'users' => 'http://users:8000/api',
+        'eventos' => 'http://eventos:8000/api',
+        'inscricao-evento' => 'http://inscricao_evento:8000/api',
+        'presencas' => 'http://presencas:8000/api',
+        'certificado' => 'http://certificado:8000/api',
+        'mail' => 'http://mail-service:8000/api'
     ];
 
     /**
