@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendConfirmacaoPresencaEmail;
 use App\Services\ApiGatewayService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -10,16 +11,9 @@ use Illuminate\Support\Facades\Session;
 class PresencaController extends Controller
 {
     private $apiGatewayService;
-    private $offline = false;
     public function __construct(ApiGatewayService $apiGatewayService)
     {
         $this->apiGatewayService = $apiGatewayService;
-        $this->offline = Session::get('offline', false);
-    }
-
-    public function isOffline()
-    {
-        return $this->offline;
     }
 
     public function store(Request $request)
@@ -27,24 +21,19 @@ class PresencaController extends Controller
         try
         {
             $presencas = $request->input("presencas");
-
+            $user = request()->user();
             $ref_evento = $request->input("evento_id");
 
             foreach($presencas as $ref_inscricao => $ref_pessoa)
             {
-                if ($this->isOffline())
-                {
-                    $this->storePresencasOffline($ref_pessoa, $ref_inscricao);
-                }
-                else
-                {
-                    $response = $this->apiGatewayService->storePresencas(
+                $response = $this->apiGatewayService->storePresencas(
                     $ref_pessoa,
                     $ref_inscricao
                 );
 
-                    $this->apiGatewayService->sendEmail();
-                }
+                $inscricao_evento = $this->apiGatewayService->getInscricaoById($ref_inscricao);
+
+                SendConfirmacaoPresencaEmail::dispatch($user, $inscricao_evento);
             }
             
             // Agora passamos um único objeto com as duas arrays
@@ -57,15 +46,5 @@ class PresencaController extends Controller
         {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
-    }
-
-    public function storePresencasOffline($ref_pessoa, $ref_inscricao)
-    {
-        Log::info("Presença salva offline para a inscrição $ref_inscricao e pessoa $ref_pessoa");
-        $localStorage = Session::get('dados_offline');
-        $presencas = $localStorage['presencas'];
-        $presencas[] = ['ref_pessoa' => $ref_pessoa, 'ref_inscricao_evento' => $ref_inscricao];
-        Session::put('dados_offline', ['presencas' => $presencas]);
-        return true;
     }
 }

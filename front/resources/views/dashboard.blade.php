@@ -7,21 +7,6 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <x-primary-button color="orange" onclick="syncWithDatabase()">
-                {{ __("Sincronizar Para Oficial") }}
-            </x-primary-button>
-            <x-primary-button color="orange" onclick="sincronizarDados()">
-                {{ __("Sincronizar Com Oficial") }}
-            </x-primary-button>
-
-            <div class="flex items-center gap-2">
-                <span id="statusText">Online</span>
-                <button onclick="toggleOfflineMode()" 
-                        id="offlineButton"
-                        class="px-4 py-2 rounded-md text-white bg-gray-500 hover:bg-gray-600">
-                    Modo Offline
-                </button>
-            </div>
             @forelse ($inscricoes as $inscricao)
             <div class="flex justify-between items-center bg-white overflow-hidden shadow-sm sm:rounded-lg" style="margin: 10px">
                 <div class="p-6 text-gray-900">

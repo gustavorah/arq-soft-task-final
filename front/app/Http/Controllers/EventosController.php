@@ -12,31 +12,18 @@ use Illuminate\Support\Facades\Session;
 class EventosController extends Controller
 {
     private $apiGatewayService;
-    private $offline = false;
 
     public function __construct(ApiGatewayService $apiGatewayService)
     {
         $this->apiGatewayService = $apiGatewayService;
-        $this->offline = Session::get('offline', false);
-    }
-
-    public function isOffline()
-    {
-        return $this->offline;
     }
 
     public function index()
     {
         try
         {
-            if ($this->offline)
-            {
-                $eventos = $this->getEventosOffline();
-            }
-            else
-            {
-                $eventos = $this->apiGatewayService->getEventos();
-            }
+            $eventos = $this->apiGatewayService->getEventos();
+            
             $user = request()->user();
 
             return view('eventos', compact('eventos', 'user'));
@@ -57,14 +44,7 @@ class EventosController extends Controller
     {
         try
         {
-            if ($this->offline)
-            {
-                $evento = $this->getEventoOffline($id);
-            }
-            else
-            {
-                return $this->apiGatewayService->getEvento($id);
-            }
+            return $this->apiGatewayService->getEvento($id);
         }
         catch (Exception $e)
         {
@@ -82,14 +62,8 @@ class EventosController extends Controller
     {
         try
         {
-            if ($this->offline)
-            {
-                $evento = $this->getEventoOffline($id);
-            }
-            else
-            {
-                $evento = $this->getEvento($id);
-            }
+            $evento = $this->getEvento($id);
+            
             
             $inscricaoEvento = new InscricaoEventoController($this->apiGatewayService);
             $inscricoes_evento = $inscricaoEvento->getAllInscricoesByRefEvento($id);

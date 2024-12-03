@@ -11,6 +11,7 @@ class InscricaoEvento extends Model
     protected $fillable = [
         "ref_pessoa",
         "ref_evento",
+        "dt_inscricao",
         "dt_cancelamento"
     ];
 

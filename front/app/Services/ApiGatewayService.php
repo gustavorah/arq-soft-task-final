@@ -57,8 +57,6 @@ class ApiGatewayService
 
     public function authenticateUser($email, $password)
     {
-        Log::info($email);
-        Log::info(md5($password));
         return $this->http->post('/users/auth', ['email' => $email, 'password' => md5($password)])->json();
     }
 
@@ -128,9 +126,19 @@ class ApiGatewayService
         return $this->http->post('/certificado/auth', ['codigo_autenticador' => $codigo_autenticador])->json();
     }
 
-    public function sendEmail()
+    public function sendEmailConfirmacaoInscricao($user, $inscricao)
     {
-        return $this->http->get('/mail')->json();
+        return $this->http->post('/mail/inscricao', ['user' => $user, 'inscricao' => $inscricao])->json();
+    }
+
+    public function sendEmailConfirmacaoPresenca($user, $inscricao)
+    {
+        return $this->http->post('/mail/presenca', ['user' => $user, 'inscricao' => $inscricao])->json();
+    }
+
+    public function sendEmailCancelamentoInscricao($user, $inscricao)
+    {
+        return $this->http->post('/mail/cancelamento', ['user' => $user, 'inscricao' => $inscricao])->json();
     }
 
     // Helper method to handle errors

@@ -23,7 +23,7 @@
 
             @forelse ($eventos as $evento)
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-4" style="width: 100%; justify-content: space-between;">
-                <div class="p-6 text-gray-900 w-1/2" style="display: flex; justify-content: space-between">
+                <div class="p-6 text-gray-900" style="display: flex; justify-content: space-between">
                     <div>
                         {{ $evento['descricao'] }}
                     </div>
@@ -212,7 +212,7 @@
                 const jaTemPresenca = dadosOficiais.presencas.find(presenca => {
                     return presenca.ref_pessoa === inscricao.ref_pessoa && presenca.ref_inscricao_evento === inscricao.id;
                 });
-                
+
                 return (
                     (inscricao.ref_evento === eventoId && inscricao.dt_cancelamento === null)
                     ||

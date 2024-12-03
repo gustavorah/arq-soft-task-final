@@ -34,7 +34,7 @@ class CertificadoController extends Controller
 
             $pdf = base64_decode($resposta['base64']);
             $caminho = $resposta['caminho'];
-            Log::info($caminho);
+            
             if (! file_exists(storage_path("tmp/$caminho")))
             {
                 file_put_contents(storage_path("tmp/$caminho"), $pdf);

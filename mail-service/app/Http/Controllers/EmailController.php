@@ -3,19 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendEmail;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class EmailController extends Controller
 {
-    public function sendEmail()
+    public function sendEmailInscricao(Request $request)
     {
-        $details = [
-            'title' => 'Título do E-mail',
-            'body' => 'Este é o corpo do e-mail para teste.'
-        ];
+        $user = $request->input('user');
+        $inscricao = $request->input('inscricao');
 
-        Mail::to('netav48229@bflcafe.com')->send(new SendEmail($details));
+        Log::info('Enviando e-mail de confirmação de inscrição para ' . $user['email']);
+        Log::info('Dados do usuário: ' . json_encode($user));
+        Log::info('Dados da inscrição: ' . json_encode($inscricao));
+        
+        Mail::to('gustavo.rahmeier@universo.univates.br')->send(new SendEmail('emails.inscricao', $user, $inscricao));
+    }
 
-        return response()->json(['message' => 'E-mail enviado com sucesso!']);
+    public function sendEmailPresenca(Request $request)
+    {
+        $user = $request->input('user');
+        $inscricao = $request->input('inscricao');
+
+        Mail::to('gustavo.rahmeier@universo.univates.br')->send(new SendEmail('emails.presenca', $user, $inscricao));
+    }
+
+    public function sendEmailCancelamento(Request $request)
+    {
+        $user = $request->input('user');
+        $inscricao = $request->input('inscricao');
+
+        Mail::to('gustavo.rahmeier@universo.univates.br')->send(new SendEmail('emails.cancelamento', $user, $inscricao));
     }
 }

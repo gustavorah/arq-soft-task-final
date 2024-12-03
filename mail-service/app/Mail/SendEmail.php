@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -13,19 +12,23 @@ class SendEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $details;
+    public $view;
+    public $user;
+    public $inscricao;
     /**
      * Create a new message instance.
      */
-    public function __construct($details)
+    public function __construct($view, $user, $inscricao)
     {
-        $this->details = $details;
+        $this->view = $view;
+        $this->user = $user;
+        $this->inscricao = $inscricao;
     }
 
     public function build()
     {
-        return $this->subject('Teste de E-mail Laravel')
-                    ->view('emails.test');
+        return $this->subject('Sistema de Eventos')
+                    ->view($this->view, ['user' => $this->user, 'inscricao' => $this->inscricao]);
     }
 
     /**
@@ -44,7 +47,7 @@ class SendEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: $this->view,
         );
     }
 
