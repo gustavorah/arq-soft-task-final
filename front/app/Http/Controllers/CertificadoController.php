@@ -3,16 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Services\ApiGatewayService;
+use App\Services\ApiGatewayServiceOuter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class CertificadoController extends Controller
 {
     private $apiGatewayService;
+    private $apiGatewayServiceOuter;
 
-    public function __construct(ApiGatewayService $apiGatewayService)
+    public function __construct(ApiGatewayService $apiGatewayService, ApiGatewayServiceOuter $apiGatewayServiceOuter)
     {
         $this->apiGatewayService = $apiGatewayService;
+        $this->apiGatewayServiceOuter = $apiGatewayServiceOuter;
     }
 
     public function gerar($ref_inscricao)
@@ -56,7 +59,7 @@ class CertificadoController extends Controller
         try
         {
             $codigo_autenticador = $request->input('codigo_autenticador');
-            $autenticado = $this->apiGatewayService->autenticarCertificado($codigo_autenticador);
+            $autenticado = $this->apiGatewayServiceOuter->autenticarCertificado($codigo_autenticador);
             Log::info($autenticado);
             if ($autenticado)
             {

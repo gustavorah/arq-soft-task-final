@@ -36,15 +36,12 @@ class ApiGatewayController extends Controller
 
         $fullUrl = rtrim($serviceUrl, '/') . '/' . ltrim($path, '/');
 
-        Log::info("Encaminhando requisição para: $fullUrl"); // Log para depuração
-
         try {
             // Obter o método da requisição
             $method = $request->method();
 
             // Encaminhar a requisição com o método original
             $response = Http::withHeaders($this->getForwardableHeaders($request));
-
             // Manipular diferentes métodos HTTP
             switch ($method) {
                 case 'GET':

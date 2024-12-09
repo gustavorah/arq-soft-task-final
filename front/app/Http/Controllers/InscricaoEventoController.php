@@ -32,7 +32,7 @@ class InscricaoEventoController extends Controller
             try
             {
                 $inscricoes[$key]['evento'] = $this->apiGatewayService->getEvento($inscricao['ref_evento']);
-             
+
                 if ($inscricoes[$key]['evento']['dt_fim'] < date('Y-m-d H:i:s'))
                 {
                     $inscricoes[$key]['evento']['pode_gerar'] = true;
@@ -44,7 +44,7 @@ class InscricaoEventoController extends Controller
             }
             catch (\Exception $e)
             {
-                throw new \Exception("Evento" . $inscricao['ref_evento'] . " não encontrado, ". $e->getMessage());
+                throw new \Exception("Evento " . $inscricao['ref_evento'] . " não encontrado, ". $e->getMessage());
             }
         }
         return view("dashboard", compact('inscricoes'));

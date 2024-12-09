@@ -36,7 +36,6 @@ class CertificadoController extends Controller
 
         if (Storage::disk('public')->exists($caminhoCompleto) || Storage::disk('public')->exists($caminhoRelativo)) 
         {
-            Log::info('sdfjksdf');
             // Codificar em Base64 o conteúdo do arquivo existente
             $conteudoBase64 = base64_encode(Storage::disk('public')->get($caminhoRelativo));
             Log::info(''. $conteudoBase64);
@@ -51,7 +50,6 @@ class CertificadoController extends Controller
 
         if (Storage::disk('public')->exists($caminhoCompleto) || Storage::disk('public')->exists($caminhoRelativo)) 
         {
-            Log::info('sdfjkssdf');
             $conteudoBase64 = base64_encode(Storage::disk('public')->get($caminhoRelativo));
             return response()->json([
                 'caminho' => $caminhoRelativo,

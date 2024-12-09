@@ -58,11 +58,13 @@ class LoginRequest extends FormRequest
                 $this->input('email'),
                 $this->input('password')
             );
+            Log::info('', ['response' => $response]);
             // Verificar o retorno do response
-            if ($response['id']) 
+            if ($response['access_token']) 
             {
                 // Log para depuração
-                Auth::loginUsingId($response['id']);
+                $user = $this->apiGatewayService->getUserByEmail($this->input('email'));
+                Auth::loginUsingId($user['id']);
                 Log::info('Usuário autenticado com sucesso', ['email' => $this->input('email')]);
             } 
             else 

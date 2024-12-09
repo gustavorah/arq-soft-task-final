@@ -65,17 +65,15 @@ class UserController extends Controller
 
     public function authenticate(Request $request)
     {
+        Log::info('entyrou');
         $user = User::where("email", $request->email)->first();
 
-        Log::info($user);
-        Log::info($request->password);
-        Log::info($user->password);
+        Log::info('', [empty($user) , $request->password !== $user->password]);
         if (empty($user) || $request->password !== $user->password) {
             return response()->json([
                 'message' => 'Credenciais inválidas',
             ], 401);
         }
-
         return response()->json($user);
     }
 

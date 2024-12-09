@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Log;
 
-class ApiGatewayService
+class ApiGatewayServiceOuter
 {
     protected string $baseUrl;
     protected PendingRequest $http;
@@ -20,8 +20,7 @@ class ApiGatewayService
         $this->http = Http::baseUrl($this->baseUrl)
             ->withHeaders([
                 'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer ' . session('token')
+                'Content-Type' => 'application/json'
             ])
             ->timeout(60);
     }
