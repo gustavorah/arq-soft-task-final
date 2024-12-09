@@ -1,6 +1,6 @@
 FROM php:8.3-cli
 
-# Instalar dependências do sistema e PHP
+# Install system and PHP dependencies
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -13,17 +13,23 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install gd pdo pdo_pgsql \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Definir diretório de trabalho
+# Set working directory
 WORKDIR /var/www
 
-# Copiar arquivos do projeto para o contêiner
+# Copy only composer files first to leverage Docker cache
+COPY composer.json composer.lock ./
+
+# Install dependencies before copying the rest of the project
+RUN composer install --no-scripts --no-autoloader
+
+# Copy the rest of the project
 COPY . .
 
-# Instalar dependências do projeto (Laravel, etc.)
-RUN composer install
+# Generate autoload files
+RUN composer dump-autoload --optimize
 
-# Expor a porta do servidor (se necessário)
+# Expose the server port
 EXPOSE 8000
 
-# Comando para iniciar o servidor
+# Start the server
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
