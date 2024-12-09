@@ -20,5 +20,5 @@ Route::post('logout', [AuthController::class,'logout'])->middleware(Authenticate
 Route::any('users/auth', [ApiGatewayController::class, 'forwardRequest']);
 
 Route::any('{service}/{path?}', [ApiGatewayController::class, 'forwardRequest'])
-    ->where('path', '.*')->middleware([LogRoute::class])->middleware([Authenticate::class]);
+    ->where('path', '.*')->middleware([LogRoute::class]);//->middleware([Authenticate::class]);
 
