@@ -1,6 +1,7 @@
+# Usar a imagem base PHP
 FROM php:8.3-cli
 
-# Install system dependencies
+# Instalar dependências do sistema
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -9,32 +10,43 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     unzip \
-    libpq-dev
+    libpq-dev \
+    nodejs \
+    npm
 
-# Clear cache
+# Limpar cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
+# Instalar extensões do PHP
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd pdo_pgsql
 
-# Install Composer
+# Instalar o Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
+# Instalar o Vite (Node.js e NPM)
+RUN npm install -g vite
+
+# Definir o diretório de trabalho
 WORKDIR /var/www
 
-# Copy existing application directory contents
+# Copiar os arquivos do aplicativo
 COPY . /var/www
 
-# Install dependencies
+# Instalar dependências do PHP
 RUN composer install --no-interaction --no-plugins --no-scripts
 
-# Generate app key and optimize
+# Instalar dependências do Node.js
+RUN npm install
+
+# Construir os assets com Vite
+RUN npm run build
+
+# Gerar chave do aplicativo e otimizar
 RUN php artisan key:generate
 RUN composer dump-autoload
 
-# Expose port 8000
+# Expor a porta 8000
 EXPOSE 8000
 
-# Start Laravel development server
+# Iniciar o servidor de desenvolvimento do Laravel
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
