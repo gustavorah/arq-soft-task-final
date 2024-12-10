@@ -4,8 +4,6 @@ services:
       context: ./users
     ports:
       - "8000:8000"
-    volumes:
-      - ./users:/var/www
     working_dir: /var/www
     command: [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]
     depends_on:
@@ -16,8 +14,6 @@ services:
       context: ./api-gateway
     ports:
       - "8001:8000"
-    volumes:
-      - ./api-gateway:/var/www
     working_dir: /var/www
     command: [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]
     depends_on:
@@ -28,8 +24,6 @@ services:
       context: ./eventos
     ports:
       - "8002:8000"
-    volumes:
-      - ./eventos:/var/www
     working_dir: /var/www
     command: [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]
     depends_on:
@@ -40,8 +34,6 @@ services:
       context: ./front
     ports:
       - "8003:8000"
-    volumes:
-      - ./front:/var/www
     working_dir: /var/www
     command: [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]
     depends_on:
@@ -52,8 +44,6 @@ services:
       context: ./inscricao_evento
     ports:
       - "8004:8000"
-    volumes:
-      - ./inscricao_evento:/var/www
     working_dir: /var/www
     command: [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]
     depends_on:
@@ -64,8 +54,6 @@ services:
       context: ./presencas
     ports:
       - "8005:8000"
-    volumes:
-      - ./presencas:/var/www
     working_dir: /var/www
     command: [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]
     depends_on:
@@ -76,8 +64,6 @@ services:
       context: ./certificado
     ports:
       - "8006:8000"
-    volumes:
-      - ./certificado:/var/www
     working_dir: /var/www
     command: [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]
     depends_on:
